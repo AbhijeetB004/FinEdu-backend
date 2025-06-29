@@ -51,3 +51,6 @@
 {"level":"info","message":"Retrying database connection...","service":"finedu-backend","timestamp":"2025-06-29 23:47:26"}
 {"level":"error","message":"Database connection failed:","service":"finedu-backend","timestamp":"2025-06-29 23:47:26"}
 {"level":"info","message":"SIGINT received, shutting down gracefully","service":"finedu-backend","timestamp":"2025-06-29 23:47:27"}
+{"level":"info","message":"FinEdu Backend server running on port 5000","service":"finedu-backend","timestamp":"2025-06-30 00:26:16"}
+{"level":"info","message":"Environment: undefined","service":"finedu-backend","timestamp":"2025-06-30 00:26:16"}
+{"level":"error","message":"Database connection failed:","service":"finedu-backend","timestamp":"2025-06-30 00:26:16"}
