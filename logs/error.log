@@ -112,3 +112,4 @@
 {"level":"error","message":"Database connection failed:","service":"finedu-backend","timestamp":"2025-07-05 15:24:47"}
 {"level":"error","message":"Database connection failed:","service":"finedu-backend","timestamp":"2025-07-05 15:24:52"}
 {"level":"error","message":"Database connection failed:","service":"finedu-backend","timestamp":"2025-07-05 15:24:57"}
+{"level":"error","message":"Database connection failed:","service":"finedu-backend","timestamp":"2025-07-05 15:25:02"}
