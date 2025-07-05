@@ -103,3 +103,4 @@
 {"level":"error","message":"Database connection failed:","service":"finedu-backend","timestamp":"2025-07-05 15:24:02"}
 {"level":"error","message":"Database connection failed:","service":"finedu-backend","timestamp":"2025-07-05 15:24:07"}
 {"level":"error","message":"Database connection failed:","service":"finedu-backend","timestamp":"2025-07-05 15:24:12"}
+{"level":"error","message":"Database connection failed:","service":"finedu-backend","timestamp":"2025-07-05 15:24:17"}
