@@ -901,3 +901,4 @@
 {"level":"info","message":"Environment: undefined","service":"finedu-backend","timestamp":"2025-07-07 03:41:35"}
 {"level":"error","message":"Database connection failed:","service":"finedu-backend","timestamp":"2025-07-07 03:41:35"}
 {"level":"info","message":"127.0.0.1 - - [06/Jul/2025:22:11:36 +0000] \"GET / HTTP/1.1\" 404 52 \"https://localhost:5000/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36\"","service":"finedu-backend","timestamp":"2025-07-07 03:41:36"}
+{"level":"info","message":"127.0.0.1 - - [06/Jul/2025:22:11:39 +0000] \"GET / HTTP/1.1\" 404 52 \"https://localhost:5000/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36\"","service":"finedu-backend","timestamp":"2025-07-07 03:41:39"}
