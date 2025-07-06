@@ -1029,3 +1029,5 @@
 {"level":"info","message":"Retrying database connection...","service":"finedu-backend","timestamp":"2025-07-07 04:11:22"}
 {"level":"error","message":"Database connection failed:","service":"finedu-backend","timestamp":"2025-07-07 04:11:22"}
 {"level":"info","message":"127.0.0.1 - - [06/Jul/2025:22:41:25 +0000] \"GET / HTTP/1.1\" 404 52 \"https://localhost:5000/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36\"","service":"finedu-backend","timestamp":"2025-07-07 04:11:25"}
+{"level":"info","message":"Retrying database connection...","service":"finedu-backend","timestamp":"2025-07-07 04:11:27"}
+{"level":"error","message":"Database connection failed:","service":"finedu-backend","timestamp":"2025-07-07 04:11:27"}
