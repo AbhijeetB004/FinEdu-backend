@@ -4,7 +4,7 @@ import { API_BASE_URL, STORAGE_KEYS, ERROR_MESSAGES } from './constants'
 import { getStoredData, removeStoredData } from './storage'
 
 // Create axios instance
-const api = axios.create({
+export const api = axios.create({
   baseURL: API_BASE_URL,
   timeout: 30000, // 30 seconds timeout for slow connections
   headers: {
@@ -150,6 +150,7 @@ export const usersAPI = {
   delete: (id) => api.delete(`/users/${id}`),
   getStudents: (params) => api.get('/users/students', { params }),
   getTeachers: (params) => api.get('/users/teachers', { params }),
+  updateProfile: (data) => api.put('/users/profile', data),
 }
 
 // Utility functions for handling API responses

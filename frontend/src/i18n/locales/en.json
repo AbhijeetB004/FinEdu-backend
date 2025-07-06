@@ -55,7 +55,8 @@
     "analytics": "Analytics",
     "settings": "Settings",
     "help": "Help",
-    "logout": "Logout"
+    "logout": "Logout",
+    "menu": "Menu"
   },
   "auth": {
     "login": "Login",
@@ -117,6 +118,7 @@
   },
   "lessons": {
     "title": "Lessons",
+    "subtitle": "Learn financial concepts through interactive lessons",
     "allLessons": "All Lessons",
     "myLessons": "My Lessons",
     "featuredLessons": "Featured Lessons",
@@ -159,10 +161,27 @@
     "banking": "Banking",
     "budgeting": "Budgeting",
     "investing": "Investing",
-    "financing": "Financing"
+    "financing": "Financing",
+    "searchPlaceholder": "Search lessons by title or category...",
+    "noLessonsFound": "No lessons found",
+    "startLearning": "Start your learning journey!",
+    "categories": {
+      "all": "All Categories",
+      "banking": "Banking",
+      "budgeting": "Budgeting",
+      "investing": "Investing",
+      "financing": "Financing"
+    },
+    "difficulties": {
+      "all": "All Difficulties",
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    }
   },
   "tasks": {
-    "title": "Tasks",
+    "pageTitle": "Tasks",
+    "subtitle": "Manage your learning assignments and track your progress",
     "myTasks": "My Tasks",
     "allTasks": "All Tasks",
     "pendingTasks": "Pending Tasks",
@@ -178,6 +197,7 @@
     "markIncomplete": "Mark as Incomplete",
     "taskCompleted": "Task Completed!",
     "taskTitle": "Task Title",
+    "title": "Title",
     "taskDescription": "Task Description",
     "dueDate": "Due Date",
     "priority": "Priority",
@@ -205,12 +225,36 @@
     "cancelled": "Cancelled",
     "noTasks": "No tasks found",
     "addTask": "Add New Task",
+    "addNewTask": "Add New Task",
     "taskDetails": "Task Details",
     "submitTask": "Submit Task",
-    "reviewTask": "Review Task"
+    "reviewTask": "Review Task",
+    "searchPlaceholder": "Search tasks by title or description...",
+    "allTypes": "All Types",
+    "showCompleted": "Show completed tasks",
+    "noTasksFound": "No tasks found",
+    "createYourFirstTask": "Create your first task to get started!",
+    "completionRate": "Completion Rate",
+    "description": "Description",
+    "type": "Type",
+    "priority": "Priority",
+    "dueDate": "Due Date",
+    "dateFormat": "mm/dd/yyyy",
+    "types": {
+      "daily": "Daily",
+      "weekly": "Weekly",
+      "monthly": "Monthly",
+      "custom": "Custom"
+    },
+    "priorities": {
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low"
+    }
   },
   "games": {
     "title": "Games",
+    "subtitle": "Learn through fun and interactive games",
     "allGames": "All Games",
     "myGames": "My Games",
     "featuredGames": "Featured Games",
@@ -259,10 +303,20 @@
     "challenge": "Challenge",
     "tournament": "Tournament",
     "practice": "Practice Mode",
-    "ranked": "Ranked Mode"
+    "ranked": "Ranked Mode",
+    "noGamesFound": "No games available",
+    "readyToPlay": "Ready to play?",
+    "startGame": "Start Game",
+    "gameTypes": {
+      "all": "All Games",
+      "budgetQuiz": "Budget Quiz",
+      "creditSimulation": "Credit Simulation",
+      "stockMarket": "Stock Market"
+    }
   },
   "chat": {
     "title": "AI Assistant",
+    "subtitle": "Get help with your financial learning questions",
     "chatbot": "Chatbot",
     "askQuestion": "Ask a Question",
     "typeMessage": "Type your message...",
@@ -294,10 +348,15 @@
     "retry": "Retry",
     "error": "Error sending message",
     "noInternet": "No internet connection",
-    "slowConnection": "Slow connection detected"
+    "slowConnection": "Slow connection detected",
+    "startNewChat": "Start a new conversation",
+    "noMessages": "No messages yet",
+    "startConversation": "Start a conversation with our AI assistant to get help with your financial learning!",
+    "placeholder": "Ask me anything about financial education..."
   },
   "profile": {
     "title": "Profile",
+    "subtitle": "Manage your account and view your progress",
     "myProfile": "My Profile",
     "editProfile": "Edit Profile",
     "personalInfo": "Personal Information",
@@ -324,6 +383,8 @@
     "takePhoto": "Take Photo",
     "removePhoto": "Remove Photo",
     "name": "Name",
+    "firstName": "First Name",
+    "lastName": "Last Name",
     "email": "Email",
     "phone": "Phone",
     "location": "Location",
@@ -344,7 +405,41 @@
     "favorites": "Favorites",
     "bookmarks": "Bookmarks",
     "downloads": "Downloads",
-    "offline": "Offline Content"
+    "offline": "Offline Content",
+    "level": "Level",
+    "xp": "XP",
+    "health": "Health",
+    "memberSince": "Member Since",
+    "notProvided": "Not provided",
+    "notAvailable": "Not available",
+    "savePreferences": "Save Preferences",
+    "enableNotifications": "Enable notifications",
+    "noAchievements": "No achievements yet",
+    "startLearning": "Start learning to earn achievements!",
+    "lessonsCompleted": "Lessons Completed",
+    "tasksCompleted": "Tasks Completed",
+    "gamesPlayed": "Games Played",
+    "tabs": {
+      "profile": "Profile",
+      "preferences": "Preferences",
+      "achievements": "Achievements",
+      "stats": "Statistics"
+    },
+    "themes": {
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    },
+    "roles": {
+      "student": "Student",
+      "teacher": "Teacher",
+      "admin": "Administrator"
+    },
+    "edit": "Edit",
+    "save": "Save",
+    "cancel": "Cancel",
+    "dateOfBirth": "Date of Birth",
+    "savePreferences": "Save Preferences"
   },
   "analytics": {
     "title": "Analytics",

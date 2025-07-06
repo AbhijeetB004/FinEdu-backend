@@ -2,6 +2,7 @@ import React, { Suspense, useEffect } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
+import { clearCorruptedData } from './utils/storage'
 
 // Context Providers
 import { AuthProvider } from './context/AuthContext'
@@ -34,6 +35,8 @@ import { useOffline } from './hooks/useOffline'
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth()
   
+  console.log('ProtectedRoute - user:', user, 'loading:', loading)
+  
   if (loading) {
     return <LoadingSpinner />
   }
@@ -48,6 +51,8 @@ const ProtectedRoute = ({ children }) => {
 // Public Route Component (redirect if authenticated)
 const PublicRoute = ({ children }) => {
   const { user, loading } = useAuth()
+  
+  console.log('PublicRoute - user:', user, 'loading:', loading)
   
   if (loading) {
     return <LoadingSpinner />
@@ -86,11 +91,31 @@ function App() {
   const { i18n } = useTranslation()
   const isOffline = useOffline()
 
+  console.log('App component rendering - i18n:', i18n.language, 'isOffline:', isOffline)
+
   useEffect(() => {
+    console.log('App useEffect - setting document properties')
+    
+    // Clear any corrupted localStorage data
+    clearCorruptedData()
+    
     // Set document direction based on language
     const direction = i18n.dir()
     document.documentElement.dir = direction
     document.documentElement.lang = i18n.language
+    
+    // Test API connection
+    const testAPI = async () => {
+      try {
+        console.log('Testing API connection...')
+        const response = await fetch('http://localhost:5000/health')
+        console.log('API test response:', response.status)
+      } catch (error) {
+        console.error('API test failed:', error.message)
+      }
+    }
+    
+    testAPI()
   }, [i18n.language])
 
   return (

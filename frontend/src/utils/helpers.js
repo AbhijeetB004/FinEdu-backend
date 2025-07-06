@@ -228,9 +228,9 @@ export const parseQueryString = (queryString) => {
   const params = new URLSearchParams(queryString)
   const result = {}
   
-  for (const [key, value] = params.entries()) {
+  params.forEach((value, key) => {
     result[key] = value
-  }
+  })
   
   return result
 }

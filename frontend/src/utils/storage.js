@@ -87,6 +87,31 @@ export const clearAllStoredData = () => {
   }
 }
 
+export const clearCorruptedData = () => {
+  try {
+    if (isLocalStorageAvailable()) {
+      // Check and clear corrupted data
+      Object.values(STORAGE_KEYS).forEach(key => {
+        try {
+          const value = localStorage.getItem(key)
+          if (value !== null) {
+            // Try to parse as JSON to check if it's valid
+            JSON.parse(value)
+          }
+        } catch (error) {
+          // If parsing fails, remove the corrupted data
+          console.warn(`Removing corrupted data for key: ${key}`)
+          localStorage.removeItem(key)
+        }
+      })
+    }
+    return true
+  } catch (error) {
+    console.error('Error clearing corrupted data:', error)
+    return false
+  }
+}
+
 // Specific storage functions for common data types
 export const setAuthToken = (token) => {
   return setStoredData(STORAGE_KEYS.AUTH_TOKEN, token)
@@ -117,7 +142,19 @@ export const setLanguage = (language) => {
 }
 
 export const getLanguage = () => {
-  return getStoredData(STORAGE_KEYS.LANGUAGE, 'en')
+  try {
+    const stored = getStoredData(STORAGE_KEYS.LANGUAGE, 'en')
+    // Handle case where language was stored as plain string instead of JSON
+    if (typeof stored === 'string') {
+      return stored
+    }
+    return stored || 'en'
+  } catch (error) {
+    // If there's any error, clear the corrupted data and return default
+    console.warn('Language data corrupted, resetting to default')
+    removeStoredData(STORAGE_KEYS.LANGUAGE)
+    return 'en'
+  }
 }
 
 export const setTheme = (theme) => {

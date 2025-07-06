@@ -1,5 +1,5 @@
 import React from 'react'
-import { AlertTriangle, RefreshCw, Home } from 'react-feather'
+// Icons replaced with emojis
 import { useTranslation } from 'react-i18next'
 
 class ErrorBoundary extends React.Component {
@@ -59,7 +59,7 @@ const ErrorFallback = ({ error, errorInfo, onReload, onGoHome }) => {
       <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-6 text-center">
         {/* Error Icon */}
         <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-          <AlertTriangle className="w-8 h-8 text-red-600" />
+          <span className="text-4xl text-red-600">⚠️</span>
         </div>
 
         {/* Error Title */}
@@ -97,7 +97,7 @@ const ErrorFallback = ({ error, errorInfo, onReload, onGoHome }) => {
             onClick={onReload}
             className="btn btn-primary flex items-center justify-center gap-2"
           >
-            <RefreshCw className="w-4 h-4" />
+            <span className="text-lg">↻</span>
             {t('common.refresh')}
           </button>
           
@@ -105,7 +105,7 @@ const ErrorFallback = ({ error, errorInfo, onReload, onGoHome }) => {
             onClick={onGoHome}
             className="btn btn-secondary flex items-center justify-center gap-2"
           >
-            <Home className="w-4 h-4" />
+            <span className="text-lg">🏠</span>
             {t('navigation.home')}
           </button>
         </div>

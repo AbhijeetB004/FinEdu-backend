@@ -1,24 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { 
-  BookOpen, 
-  CheckSquare, 
-  Gamepad2, 
-  MessageCircle,
-  TrendingUp,
-  Award,
-  Target,
-  Calendar,
-  ArrowRight,
-  Play,
-  Clock,
-  Star,
-  Zap
-} from 'react-feather'
+// Icons replaced with emojis
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../hooks/useAuth'
 import { useGame } from '../hooks/useGameification'
+import { tasksAPI } from '../utils/api'
 
 const Dashboard = () => {
   const { t } = useTranslation()
@@ -26,34 +13,27 @@ const Dashboard = () => {
   const { getAvatarStats } = useGame()
   
   const avatarStats = getAvatarStats()
+  const [todaysTasks, setTodaysTasks] = React.useState([])
+  const [loadingTasks, setLoadingTasks] = React.useState(true)
 
-  // Mock data for demonstration
-  const todaysTasks = [
-    {
-      id: 1,
-      title: 'Complete Banking Basics Lesson',
-      type: 'lesson',
-      xp: 15,
-      timeEstimate: '10 min',
-      completed: false
-    },
-    {
-      id: 2,
-      title: 'Budget Planning Exercise',
-      type: 'task',
-      xp: 20,
-      timeEstimate: '15 min',
-      completed: false
-    },
-    {
-      id: 3,
-      title: 'Play Credit Score Game',
-      type: 'game',
-      xp: 25,
-      timeEstimate: '5 min',
-      completed: true
+  React.useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        setLoadingTasks(true)
+        const response = await tasksAPI.getUserTasks()
+        // Filter for incomplete tasks and take the first 3
+        const tasks = Array.isArray(response.data.tasks)
+          ? response.data.tasks.filter(task => !task.completed).slice(0, 3)
+          : []
+        setTodaysTasks(tasks)
+      } catch (error) {
+        setTodaysTasks([])
+      } finally {
+        setLoadingTasks(false)
+      }
     }
-  ]
+    fetchTasks()
+  }, [])
 
   const recentLessons = [
     {
@@ -90,28 +70,28 @@ const Dashboard = () => {
     {
       title: 'Continue Learning',
       description: 'Resume your last lesson',
-      icon: BookOpen,
+      icon: '📚',
       color: 'bg-blue-500',
       link: '/lessons'
     },
     {
       title: 'View Tasks',
       description: 'Check your assignments',
-      icon: CheckSquare,
+      icon: '✅',
       color: 'bg-green-500',
       link: '/tasks'
     },
     {
       title: 'Play Games',
       description: 'Learn through games',
-      icon: Gamepad2,
+      icon: '⚡',
       color: 'bg-purple-500',
       link: '/games'
     },
     {
       title: 'Ask AI Assistant',
       description: 'Get help with questions',
-      icon: MessageCircle,
+      icon: '💬',
       color: 'bg-orange-500',
       link: '/chat'
     }
@@ -159,7 +139,7 @@ const Dashboard = () => {
           <motion.div variants={itemVariants} className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="stat-card bg-gradient-to-br from-yellow-400 to-yellow-600 text-white">
               <div className="flex items-center justify-center mb-2">
-                <Star className="w-6 h-6" />
+                <span className="text-2xl">⭐</span>
               </div>
               <div className="stat-value">{avatarStats.level}</div>
               <div className="stat-label text-yellow-100">{t('dashboard.level')}</div>
@@ -167,7 +147,7 @@ const Dashboard = () => {
             
             <div className="stat-card bg-gradient-to-br from-blue-400 to-blue-600 text-white">
               <div className="flex items-center justify-center mb-2">
-                <Zap className="w-6 h-6" />
+                <span className="text-2xl">⚡</span>
               </div>
               <div className="stat-value">{avatarStats.xp}</div>
               <div className="stat-label text-blue-100">{t('dashboard.xp')}</div>
@@ -221,7 +201,7 @@ const Dashboard = () => {
                 <div className="card-body">
                   <div className="flex items-center justify-between mb-4">
                     <h2 className="text-xl font-semibold text-gray-900 flex items-center">
-                      <Target className="w-5 h-5 mr-2 text-primary-600" />
+                      <span className="mr-2 text-primary-600">🎯</span>
                       {t('dashboard.todaysGoals')}
                     </h2>
                     <Link to="/tasks" className="text-primary-600 hover:text-primary-700 text-sm font-medium">
@@ -230,58 +210,64 @@ const Dashboard = () => {
                   </div>
                   
                   <div className="space-y-3">
-                    {todaysTasks.map((task) => (
-                      <div
-                        key={task.id}
-                        className={`p-4 rounded-lg border-2 transition-all duration-200 ${
-                          task.completed
-                            ? 'border-green-200 bg-green-50'
-                            : 'border-gray-200 bg-white hover:border-primary-200'
-                        }`}
-                      >
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-3">
-                            <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
-                              task.completed
-                                ? 'border-green-500 bg-green-500'
-                                : 'border-gray-300'
-                            }`}>
-                              {task.completed && (
-                                <motion.div
-                                  initial={{ scale: 0 }}
-                                  animate={{ scale: 1 }}
-                                  className="text-white text-sm"
-                                >
-                                  ✓
-                                </motion.div>
-                              )}
-                            </div>
-                            <div>
-                              <h3 className={`font-medium ${
-                                task.completed ? 'text-green-700 line-through' : 'text-gray-900'
+                    {loadingTasks ? (
+                      <div className="text-center text-gray-500">Loading...</div>
+                    ) : todaysTasks.length === 0 ? (
+                      <div className="text-center text-gray-500">No tasks for today!</div>
+                    ) : (
+                      todaysTasks.map((task) => (
+                        <div
+                          key={task._id}
+                          className={`p-4 rounded-lg border-2 transition-all duration-200 ${
+                            task.completed
+                              ? 'border-green-200 bg-green-50'
+                              : 'border-gray-200 bg-white hover:border-primary-200'
+                          }`}
+                        >
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center space-x-3">
+                              <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
+                                task.completed
+                                  ? 'border-green-500 bg-green-500'
+                                  : 'border-gray-300'
                               }`}>
-                                {task.title}
-                              </h3>
-                              <div className="flex items-center space-x-4 text-sm text-gray-500">
-                                <span className="flex items-center">
-                                  <Clock className="w-4 h-4 mr-1" />
-                                  {task.timeEstimate}
-                                </span>
-                                <span className="flex items-center">
-                                  <Zap className="w-4 h-4 mr-1" />
-                                  {task.xp} XP
-                                </span>
+                                {task.completed && (
+                                  <motion.div
+                                    initial={{ scale: 0 }}
+                                    animate={{ scale: 1 }}
+                                    className="text-white text-sm"
+                                  >
+                                    ✓
+                                  </motion.div>
+                                )}
+                              </div>
+                              <div>
+                                <h3 className={`font-medium ${
+                                  task.completed ? 'text-green-700 line-through' : 'text-gray-900'
+                                }`}>
+                                  {task.title}
+                                </h3>
+                                <div className="flex items-center space-x-4 text-sm text-gray-500">
+                                  <span className="flex items-center">
+                                    <span className="mr-1">⏰</span>
+                                    {task.estimatedDuration ? `${task.estimatedDuration} min` : ''}
+                                  </span>
+                                  <span className="flex items-center">
+                                    <span className="mr-1">⚡</span>
+                                    {task.xpReward ? `${task.xpReward} XP` : ''}
+                                  </span>
+                                </div>
                               </div>
                             </div>
+                            {!task.completed && (
+                              <Link to="/tasks" className="btn btn-primary btn-sm">
+                                Start
+                              </Link>
+                            )}
                           </div>
-                          {!task.completed && (
-                            <button className="btn btn-primary btn-sm">
-                              Start
-                            </button>
-                          )}
                         </div>
-                      </div>
-                    ))}
+                      ))
+                    )}
                   </div>
                 </div>
               </motion.div>
@@ -291,7 +277,7 @@ const Dashboard = () => {
                 <div className="card-body">
                   <div className="flex items-center justify-between mb-4">
                     <h2 className="text-xl font-semibold text-gray-900 flex items-center">
-                      <BookOpen className="w-5 h-5 mr-2 text-primary-600" />
+                      <span className="mr-2 text-primary-600">📚</span>
                       {t('dashboard.continuelearning')}
                     </h2>
                     <Link to="/lessons" className="text-primary-600 hover:text-primary-700 text-sm font-medium">
@@ -309,7 +295,7 @@ const Dashboard = () => {
                             className="w-full h-32 object-cover group-hover:scale-105 transition-transform duration-200"
                           />
                           <div className="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-30 transition-all duration-200 flex items-center justify-center">
-                            <Play className="w-8 h-8 text-white" />
+                            <span className="text-white text-2xl">▶</span>
                           </div>
                           <div className="absolute bottom-2 left-2 right-2">
                             <div className="progress-bar h-1">
@@ -341,26 +327,23 @@ const Dashboard = () => {
                   </h2>
                   
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    {quickActions.map((action, index) => {
-                      const Icon = action.icon
-                      return (
-                        <Link
-                          key={index}
-                          to={action.link}
-                          className="group p-4 rounded-lg border border-gray-200 hover:border-primary-200 hover:shadow-md transition-all duration-200"
-                        >
-                          <div className={`w-10 h-10 ${action.color} rounded-lg flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-200`}>
-                            <Icon className="w-5 h-5 text-white" />
-                          </div>
-                          <h3 className="font-medium text-gray-900 text-sm mb-1">
-                            {action.title}
-                          </h3>
-                          <p className="text-xs text-gray-600">
-                            {action.description}
-                          </p>
-                        </Link>
-                      )
-                    })}
+                    {quickActions.map((action, index) => (
+                      <Link
+                        key={index}
+                        to={action.link}
+                        className="group p-4 rounded-lg border border-gray-200 hover:border-primary-200 hover:shadow-md transition-all duration-200"
+                      >
+                        <div className={`w-10 h-10 ${action.color} rounded-lg flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-200`}>
+                          <span className="text-white text-lg">{action.icon}</span>
+                        </div>
+                        <h3 className="font-medium text-gray-900 text-sm mb-1">
+                          {action.title}
+                        </h3>
+                        <p className="text-xs text-gray-600">
+                          {action.description}
+                        </p>
+                      </Link>
+                    ))}
                   </div>
                 </div>
               </motion.div>
@@ -373,7 +356,7 @@ const Dashboard = () => {
                 <div className="card-body">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="font-semibold text-gray-900 flex items-center">
-                      <Award className="w-5 h-5 mr-2 text-primary-600" />
+                      <span className="mr-2 text-primary-600">🏆</span>
                       {t('dashboard.achievements')}
                     </h3>
                     <Link to="/profile" className="text-primary-600 hover:text-primary-700 text-sm">
@@ -407,7 +390,7 @@ const Dashboard = () => {
               <motion.div variants={itemVariants} className="card">
                 <div className="card-body">
                   <h3 className="font-semibold text-gray-900 mb-4 flex items-center">
-                    <TrendingUp className="w-5 h-5 mr-2 text-primary-600" />
+                    <span className="mr-2 text-primary-600">📈</span>
                     Weekly Progress
                   </h3>
                   
@@ -449,7 +432,7 @@ const Dashboard = () => {
               <motion.div variants={itemVariants} className="card">
                 <div className="card-body">
                   <h3 className="font-semibold text-gray-900 mb-4 flex items-center">
-                    <Calendar className="w-5 h-5 mr-2 text-primary-600" />
+                    <span className="mr-2 text-primary-600">📅</span>
                     This Week
                   </h3>
                   

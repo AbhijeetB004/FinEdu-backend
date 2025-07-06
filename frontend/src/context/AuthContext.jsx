@@ -74,14 +74,19 @@ export const AuthProvider = ({ children }) => {
   // Initialize auth state from storage
   useEffect(() => {
     const initializeAuth = async () => {
+      console.log('AuthContext: Initializing auth state...')
       try {
         const token = getAuthToken()
         const userData = getUserData()
+        
+        console.log('AuthContext: Token found:', !!token, 'User data found:', !!userData)
 
         if (token && userData) {
           // Verify token is still valid
           try {
+            console.log('AuthContext: Verifying token with backend...')
             const response = await authAPI.getProfile()
+            console.log('AuthContext: Token verified, user:', response.data.user)
             dispatch({
               type: AUTH_ACTIONS.LOGIN_SUCCESS,
               payload: {
@@ -90,16 +95,18 @@ export const AuthProvider = ({ children }) => {
               },
             })
           } catch (error) {
+            console.log('AuthContext: Token verification failed:', error.message)
             // Token is invalid, clear storage
             removeAuthToken()
             removeUserData()
             dispatch({ type: AUTH_ACTIONS.SET_LOADING, payload: false })
           }
         } else {
+          console.log('AuthContext: No token or user data found, setting loading to false')
           dispatch({ type: AUTH_ACTIONS.SET_LOADING, payload: false })
         }
       } catch (error) {
-        console.error('Auth initialization error:', error)
+        console.error('AuthContext: Auth initialization error:', error)
         dispatch({ type: AUTH_ACTIONS.SET_LOADING, payload: false })
       }
     }

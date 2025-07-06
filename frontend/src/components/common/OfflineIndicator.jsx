@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { WifiOff, Wifi, AlertCircle } from 'react-feather'
+// Icons replaced with emojis
 import { useTranslation } from 'react-i18next'
 import { useOffline } from '../../hooks/useOffline'
 
@@ -28,21 +28,21 @@ const OfflineIndicator = () => {
   const getIndicatorContent = () => {
     if (isReconnecting) {
       return {
-        icon: <Wifi className="w-4 h-4" />,
+        icon: <span className="text-lg">📶</span>,
         text: t('offline.reconnected'),
         bgColor: 'bg-success-500',
         textColor: 'text-white'
       }
     } else if (isOffline) {
       return {
-        icon: <WifiOff className="w-4 h-4" />,
+        icon: <span className="text-lg">📴</span>,
         text: t('offline.title'),
         bgColor: 'bg-danger-500',
         textColor: 'text-white'
       }
     } else if (isSlowConnection) {
       return {
-        icon: <AlertCircle className="w-4 h-4" />,
+        icon: <span className="text-lg">⚠️</span>,
         text: t('offline.slowConnection'),
         bgColor: 'bg-warning-500',
         textColor: 'text-white'
@@ -99,7 +99,7 @@ export const OfflineContent = ({ children, fallback }) => {
     return (
       fallback || (
         <div className="text-center py-8">
-          <WifiOff className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+          <span className="text-5xl text-gray-400 mx-auto mb-4">📴</span>
           <h3 className="text-lg font-medium text-gray-900 mb-2">
             {t('offline.title')}
           </h3>
@@ -122,7 +122,7 @@ export const OfflineBadge = ({ isAvailableOffline = false }) => {
 
   return (
     <span className="inline-flex items-center gap-1 px-2 py-1 bg-success-100 text-success-800 text-xs font-medium rounded-full">
-      <WifiOff className="w-3 h-3" />
+                  <span className="text-sm">📴</span>
       {t('offline.availableOffline')}
     </span>
   )

@@ -1,18 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { 
-  BookOpen, 
-  Users, 
-  Award, 
-  Smartphone, 
-  Globe, 
-  TrendingUp,
-  ArrowRight,
-  Play,
-  Star,
-  CheckCircle
-} from 'react-feather'
+// Icons replaced with emojis
 import { useTranslation } from 'react-i18next'
 
 const Home = () => {
@@ -20,37 +9,37 @@ const Home = () => {
 
   const features = [
     {
-      icon: BookOpen,
+      icon: '📚',
       title: 'Interactive Lessons',
       description: 'Learn financial concepts through engaging, bite-sized lessons designed for rural communities.',
       color: 'text-blue-600'
     },
     {
-      icon: Users,
+      icon: '👥',
       title: 'Community Learning',
       description: 'Connect with peers and teachers in a supportive learning environment.',
       color: 'text-green-600'
     },
     {
-      icon: Award,
+      icon: '🏆',
       title: 'Gamified Experience',
       description: 'Earn XP, unlock achievements, and level up your financial knowledge.',
       color: 'text-purple-600'
     },
     {
-      icon: Smartphone,
+      icon: '📱',
       title: 'Mobile-First Design',
       description: 'Optimized for smartphones and low-bandwidth connections.',
       color: 'text-orange-600'
     },
     {
-      icon: Globe,
+      icon: '🌍',
       title: 'Multi-Language Support',
       description: 'Available in English, Hindi, and Kannada for better accessibility.',
       color: 'text-indigo-600'
     },
     {
-      icon: TrendingUp,
+      icon: '📈',
       title: 'Progress Tracking',
       description: 'Monitor your learning journey with detailed analytics and insights.',
       color: 'text-red-600'
@@ -179,11 +168,11 @@ const Home = () => {
             >
               <Link to="/register" className="btn btn-primary btn-lg">
                 Get Started Free
-                <ArrowRight className="w-5 h-5 ml-2" />
+                <span className="ml-2">→</span>
               </Link>
               
               <button className="btn btn-secondary btn-lg flex items-center">
-                <Play className="w-5 h-5 mr-2" />
+                <span className="mr-2">▶</span>
                 Watch Demo
               </button>
             </motion.div>
@@ -236,28 +225,25 @@ const Home = () => {
             viewport={{ once: true }}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
-            {features.map((feature, index) => {
-              const Icon = feature.icon
-              return (
-                <motion.div
-                  key={index}
-                  variants={itemVariants}
-                  className="card hover:shadow-lg transition-shadow duration-300"
-                >
-                  <div className="card-body text-center">
-                    <div className={`w-12 h-12 ${feature.color} bg-opacity-10 rounded-lg flex items-center justify-center mx-auto mb-4`}>
-                      <Icon className={`w-6 h-6 ${feature.color}`} />
-                    </div>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                      {feature.title}
-                    </h3>
-                    <p className="text-gray-600">
-                      {feature.description}
-                    </p>
+            {features.map((feature, index) => (
+              <motion.div
+                key={index}
+                variants={itemVariants}
+                className="card hover:shadow-lg transition-shadow duration-300"
+              >
+                <div className="card-body text-center">
+                  <div className={`w-12 h-12 ${feature.color} bg-opacity-10 rounded-lg flex items-center justify-center mx-auto mb-4`}>
+                    <span className={`text-2xl ${feature.color}`}>{feature.icon}</span>
                   </div>
-                </motion.div>
-              )
-            })}
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                    {feature.title}
+                  </h3>
+                  <p className="text-gray-600">
+                    {feature.description}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
           </motion.div>
         </div>
       </section>
@@ -298,45 +284,42 @@ const Home = () => {
                 step: '01',
                 title: 'Sign Up',
                 description: 'Create your free account and choose your preferred language',
-                icon: Users
+                icon: '👥'
               },
               {
                 step: '02',
                 title: 'Learn',
                 description: 'Complete interactive lessons and play educational games',
-                icon: BookOpen
+                icon: '📚'
               },
               {
                 step: '03',
                 title: 'Grow',
                 description: 'Track your progress and earn achievements as you learn',
-                icon: TrendingUp
+                icon: '📈'
               }
-            ].map((step, index) => {
-              const Icon = step.icon
-              return (
-                <motion.div
-                  key={index}
-                  variants={itemVariants}
-                  className="text-center"
-                >
-                  <div className="relative mb-6">
-                    <div className="w-16 h-16 bg-primary-600 rounded-full flex items-center justify-center mx-auto">
-                      <Icon className="w-8 h-8 text-white" />
-                    </div>
-                    <div className="absolute -top-2 -right-2 w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
-                      <span className="text-primary-600 font-bold text-sm">{step.step}</span>
-                    </div>
+            ].map((step, index) => (
+              <motion.div
+                key={index}
+                variants={itemVariants}
+                className="text-center"
+              >
+                <div className="relative mb-6">
+                  <div className="w-16 h-16 bg-primary-600 rounded-full flex items-center justify-center mx-auto">
+                    <span className="text-white text-2xl">{step.icon}</span>
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                    {step.title}
-                  </h3>
-                  <p className="text-gray-600">
-                    {step.description}
-                  </p>
-                </motion.div>
-              )
-            })}
+                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
+                    <span className="text-primary-600 font-bold text-sm">{step.step}</span>
+                  </div>
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  {step.title}
+                </h3>
+                <p className="text-gray-600">
+                  {step.description}
+                </p>
+              </motion.div>
+            ))}
           </motion.div>
         </div>
       </section>
@@ -381,7 +364,7 @@ const Home = () => {
                 <div className="card-body">
                   <div className="flex items-center mb-4">
                     {Array.from({ length: testimonial.rating }).map((_, i) => (
-                      <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
+                      <span key={i} className="text-yellow-400 text-lg">⭐</span>
                     ))}
                   </div>
                   <p className="text-gray-600 mb-4 italic">
@@ -428,7 +411,7 @@ const Home = () => {
             >
               <Link to="/register" className="btn bg-white text-primary-600 hover:bg-gray-50 btn-lg">
                 Start Learning Today
-                <ArrowRight className="w-5 h-5 ml-2" />
+                <span className="ml-2">→</span>
               </Link>
               <Link to="/login" className="btn border-2 border-white text-white hover:bg-white hover:text-primary-600 btn-lg">
                 Sign In

@@ -56,7 +56,7 @@ module.exports = {
 
   /**
    * @route POST /api/tasks
-   * @desc Create new task (teacher only)
+   * @desc Create new task (all authenticated users)
    */
   createTask: async (req, res) => {
     try {
@@ -70,22 +70,30 @@ module.exports = {
         xpReward,
         healthPenalty,
         difficulty,
+        priority,
         estimatedDuration,
         instructions,
         tags
       } = req.body;
 
+      // For students, they can only assign tasks to themselves
+      // For teachers, they can assign to multiple students
+      const taskAssignees = req.user.role === 'teacher' && assignedTo 
+        ? assignedTo 
+        : [req.user._id];
+
       const task = await Task.create({
         title,
         description,
         type: type || TASK_TYPES.CUSTOM,
-        category,
+        category: category || LESSON_CATEGORIES.BUDGETING, // Default category
         assignedBy: req.user._id,
-        assignedTo,
+        assignedTo: taskAssignees,
         dueDate: new Date(dueDate),
         xpReward: xpReward || 15,
         healthPenalty: healthPenalty || 5,
         difficulty: difficulty || 'medium',
+        priority: priority || 'medium',
         estimatedDuration: estimatedDuration || 30,
         instructions,
         tags: tags || []
@@ -146,11 +154,11 @@ module.exports = {
 
   /**
    * @route POST /api/tasks/:id/complete
-   * @desc Mark task as completed
+   * @desc Toggle task completion status
    */
   completeTask: async (req, res) => {
     try {
-      const { score, notes, submittedFiles } = req.body;
+      const { completed, score, notes, submittedFiles } = req.body;
       const task = await Task.findById(req.params.id);
       
       if (!task) {
@@ -162,38 +170,69 @@ module.exports = {
         return res.status(403).json({ error: ERROR_MESSAGES.FORBIDDEN });
       }
 
-      // Check if already completed
-      if (task.isCompletedByStudent(req.user._id)) {
-        return res.status(400).json({ error: 'Task already completed' });
-      }
-
-      // Mark as completed
-      await task.markCompleted(req.user._id, score, notes, submittedFiles);
-
-      // Calculate XP and update avatar
-      const xpEarned = calculateXP('task', task.difficulty, task.xpReward);
+      const isCurrentlyCompleted = task.isCompletedByStudent(req.user._id);
       const avatar = await Avatar.findOne({ userId: req.user._id });
-      
-      if (avatar) {
-        await avatar.addXP(xpEarned);
-        avatar.totalTasksCompleted += 1;
-        await avatar.save();
-      }
 
-      res.status(200).json({
-        message: SUCCESS_MESSAGES.TASK_COMPLETED,
-        xpEarned,
-        score: score || 0,
-        avatar: avatar ? avatar.getStats() : null
-      });
+      if (completed && !isCurrentlyCompleted) {
+        // Mark as completed
+        await task.markCompleted(req.user._id, score, notes, submittedFiles);
+        // Reload the task to get the latest completions
+        await task.reload();
+        await task.save();
+
+        // Calculate XP and update avatar
+        const xpEarned = calculateXP('task', task.difficulty, task.xpReward);
+        
+        if (avatar) {
+          await avatar.addXP(xpEarned);
+          avatar.totalTasksCompleted += 1;
+          await avatar.save();
+        }
+
+        res.status(200).json({
+          message: SUCCESS_MESSAGES.TASK_COMPLETED,
+          xpEarned,
+          score: score || 0,
+          avatar: avatar ? avatar.getStats() : null,
+          completed: true
+        });
+      } else if (!completed && isCurrentlyCompleted) {
+        // Remove completion
+        task.completions = task.completions.filter(
+          completion => completion.student.toString() !== req.user._id.toString()
+        );
+        await task.save();
+
+        // Remove XP and update avatar
+        const xpLost = calculateXP('task', task.difficulty, task.xpReward);
+        
+        if (avatar) {
+          await avatar.addXP(-xpLost);
+          avatar.totalTasksCompleted = Math.max(0, avatar.totalTasksCompleted - 1);
+          await avatar.save();
+        }
+
+        res.status(200).json({
+          message: 'Task marked as incomplete',
+          xpLost,
+          avatar: avatar ? avatar.getStats() : null,
+          completed: false
+        });
+      } else {
+        // No change needed
+        res.status(200).json({
+          message: isCurrentlyCompleted ? 'Task already completed' : 'Task already incomplete',
+          completed: isCurrentlyCompleted
+        });
+      }
     } catch (err) {
-      res.status(500).json({ error: 'Failed to complete task', message: err.message });
+      res.status(500).json({ error: 'Failed to update task completion', message: err.message });
     }
   },
 
   /**
    * @route PUT /api/tasks/:id
-   * @desc Update task (teacher only)
+   * @desc Update task (owner only)
    */
   updateTask: async (req, res) => {
     try {
@@ -202,7 +241,7 @@ module.exports = {
         return res.status(404).json({ error: ERROR_MESSAGES.TASK_NOT_FOUND });
       }
 
-      // Check if user is the assigner
+      // Check if user is the assigner (owner of the task)
       if (task.assignedBy.toString() !== req.user._id.toString()) {
         return res.status(403).json({ error: ERROR_MESSAGES.FORBIDDEN });
       }
@@ -217,6 +256,7 @@ module.exports = {
         xpReward,
         healthPenalty,
         difficulty,
+        priority,
         estimatedDuration,
         instructions,
         tags,
@@ -228,11 +268,17 @@ module.exports = {
       if (description) task.description = description;
       if (type) task.type = type;
       if (category) task.category = category;
-      if (assignedTo) task.assignedTo = assignedTo;
+      
+      // Only teachers can change assignedTo
+      if (assignedTo && req.user.role === 'teacher') {
+        task.assignedTo = assignedTo;
+      }
+      
       if (dueDate) task.dueDate = new Date(dueDate);
       if (xpReward) task.xpReward = xpReward;
       if (healthPenalty) task.healthPenalty = healthPenalty;
       if (difficulty) task.difficulty = difficulty;
+      if (priority) task.priority = priority;
       if (estimatedDuration) task.estimatedDuration = estimatedDuration;
       if (instructions) task.instructions = instructions;
       if (tags) task.tags = tags;
@@ -253,7 +299,7 @@ module.exports = {
 
   /**
    * @route DELETE /api/tasks/:id
-   * @desc Delete task (teacher only)
+   * @desc Delete task (owner only)
    */
   deleteTask: async (req, res) => {
     try {
@@ -262,7 +308,7 @@ module.exports = {
         return res.status(404).json({ error: ERROR_MESSAGES.TASK_NOT_FOUND });
       }
 
-      // Check if user is the assigner
+      // Check if user is the assigner (owner of the task)
       if (task.assignedBy.toString() !== req.user._id.toString()) {
         return res.status(403).json({ error: ERROR_MESSAGES.FORBIDDEN });
       }

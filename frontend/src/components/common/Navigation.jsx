@@ -1,19 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { 
-  Home, 
-  BookOpen, 
-  CheckSquare, 
-  Gamepad2, 
-  MessageCircle, 
-  User,
-  Menu,
-  X,
-  BarChart3,
-  Settings,
-  LogOut
-} from 'react-feather'
+// Icons replaced with emojis and text
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../../hooks/useAuth'
 import { useGame } from '../../hooks/useGameification'
@@ -33,31 +21,31 @@ const Navigation = () => {
       {
         name: t('navigation.dashboard'),
         path: '/dashboard',
-        icon: Home,
+        icon: '🏠',
         roles: ['student', 'teacher', 'admin']
       },
       {
         name: t('navigation.lessons'),
         path: '/lessons',
-        icon: BookOpen,
+        icon: '📚',
         roles: ['student', 'teacher', 'admin']
       },
       {
         name: t('navigation.tasks'),
         path: '/tasks',
-        icon: CheckSquare,
+        icon: '✅',
         roles: ['student', 'teacher', 'admin']
       },
       {
         name: t('navigation.games'),
         path: '/games',
-        icon: Gamepad2,
+        icon: '🎮',
         roles: ['student', 'teacher', 'admin']
       },
       {
         name: t('navigation.chat'),
         path: '/chat',
-        icon: MessageCircle,
+        icon: '💬',
         roles: ['student', 'teacher', 'admin']
       }
     ]
@@ -67,7 +55,7 @@ const Navigation = () => {
       baseItems.push({
         name: t('navigation.analytics'),
         path: '/analytics',
-        icon: BarChart3,
+        icon: '📊',
         roles: ['teacher', 'admin']
       })
     }
@@ -110,7 +98,6 @@ const Navigation = () => {
             {/* Navigation Links */}
             <div className="flex items-center space-x-1">
               {navigationItems.map((item) => {
-                const Icon = item.icon
                 const isActive = isActiveRoute(item.path)
                 
                 return (
@@ -126,7 +113,7 @@ const Navigation = () => {
                       }
                     `}
                   >
-                    <Icon className="w-4 h-4" />
+                    <span className="text-lg">{item.icon}</span>
                     <span>{item.name}</span>
                     
                     {isActive && (
@@ -178,14 +165,14 @@ const Navigation = () => {
                       to="/profile"
                       className="flex items-center space-x-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
                     >
-                      <User className="w-4 h-4" />
+                      <span className="text-lg">👤</span>
                       <span>{t('navigation.profile')}</span>
                     </Link>
                     <Link
                       to="/settings"
                       className="flex items-center space-x-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
                     >
-                      <Settings className="w-4 h-4" />
+                      <span className="text-lg">⚙️</span>
                       <span>{t('navigation.settings')}</span>
                     </Link>
                     <hr className="my-1" />
@@ -193,7 +180,7 @@ const Navigation = () => {
                       onClick={handleLogout}
                       className="flex items-center space-x-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 w-full text-left"
                     >
-                      <LogOut className="w-4 h-4" />
+                      <span className="text-lg">🚪</span>
                       <span>{t('navigation.logout')}</span>
                     </button>
                   </div>
@@ -229,11 +216,7 @@ const Navigation = () => {
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="p-2 rounded-lg hover:bg-gray-50 transition-colors"
             >
-              {isMobileMenuOpen ? (
-                <X className="w-6 h-6" />
-              ) : (
-                <Menu className="w-6 h-6" />
-              )}
+              <span className="text-xl">{isMobileMenuOpen ? '✕' : '☰'}</span>
             </button>
           </div>
         </header>
@@ -273,7 +256,6 @@ const Navigation = () => {
                   {/* Navigation Links */}
                   <nav className="space-y-2">
                     {navigationItems.map((item) => {
-                      const Icon = item.icon
                       const isActive = isActiveRoute(item.path)
                       
                       return (
@@ -289,7 +271,7 @@ const Navigation = () => {
                             }
                           `}
                         >
-                          <Icon className="w-5 h-5" />
+                          <span className="text-xl">{item.icon}</span>
                           <span>{item.name}</span>
                         </Link>
                       )
@@ -303,7 +285,7 @@ const Navigation = () => {
                       onClick={closeMobileMenu}
                       className="flex items-center space-x-3 px-3 py-3 rounded-lg text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
                     >
-                      <User className="w-5 h-5" />
+                      <span className="text-xl">👤</span>
                       <span>{t('navigation.profile')}</span>
                     </Link>
                     <Link
@@ -311,14 +293,14 @@ const Navigation = () => {
                       onClick={closeMobileMenu}
                       className="flex items-center space-x-3 px-3 py-3 rounded-lg text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
                     >
-                      <Settings className="w-5 h-5" />
+                      <span className="text-xl">⚙️</span>
                       <span>{t('navigation.settings')}</span>
                     </Link>
                     <button
                       onClick={handleLogout}
                       className="flex items-center space-x-3 px-3 py-3 rounded-lg text-base font-medium text-red-600 hover:bg-red-50 w-full text-left"
                     >
-                      <LogOut className="w-5 h-5" />
+                      <span className="text-xl">🚪</span>
                       <span>{t('navigation.logout')}</span>
                     </button>
                   </div>
@@ -332,7 +314,6 @@ const Navigation = () => {
         <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-30">
           <div className="flex items-center justify-around py-2">
             {navigationItems.slice(0, 5).map((item) => {
-              const Icon = item.icon
               const isActive = isActiveRoute(item.path)
               
               return (
@@ -347,7 +328,7 @@ const Navigation = () => {
                     }
                   `}
                 >
-                  <Icon className="w-5 h-5" />
+                  <span className="text-xl">{item.icon}</span>
                   <span className="text-xs font-medium">{item.name}</span>
                   
                   {isActive && (

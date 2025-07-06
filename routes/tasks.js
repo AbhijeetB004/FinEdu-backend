@@ -11,8 +11,8 @@ const roleCheck = require('../middleware/roleCheck');
 router.get('/', auth, taskController.getUserTasks);
 
 // @route   POST /api/tasks
-// @desc    Create new task (teacher only)
-router.post('/', auth, roleCheck('teacher'), /*validate(taskSchema),*/ taskController.createTask);
+// @desc    Create new task (all authenticated users)
+router.post('/', auth, /*validate(taskSchema),*/ taskController.createTask);
 
 // @route   GET /api/tasks/assigned
 // @desc    Get tasks assigned by teacher
@@ -23,11 +23,11 @@ router.get('/assigned', auth, roleCheck('teacher'), taskController.getAssignedTa
 router.post('/:id/complete', auth, taskController.completeTask);
 
 // @route   PUT /api/tasks/:id
-// @desc    Update task (teacher only)
-router.put('/:id', auth, roleCheck('teacher'), /*validate(taskSchema),*/ taskController.updateTask);
+// @desc    Update task (owner only)
+router.put('/:id', auth, taskController.updateTask);
 
 // @route   DELETE /api/tasks/:id
-// @desc    Delete task (teacher only)
-router.delete('/:id', auth, roleCheck('teacher'), taskController.deleteTask);
+// @desc    Delete task (owner only)
+router.delete('/:id', auth, taskController.deleteTask);
 
 module.exports = router; 

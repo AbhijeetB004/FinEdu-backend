@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Eye, EyeOff, Mail, Lock, ArrowRight } from 'react-feather'
+// Icons replaced with emojis and text
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../hooks/useAuth'
@@ -110,7 +110,7 @@ const Login = () => {
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Mail className="h-5 w-5 text-gray-400" />
+                    <span className="text-lg text-gray-400">📧</span>
                   </div>
                   <input
                     id="email"
@@ -139,7 +139,7 @@ const Login = () => {
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Lock className="h-5 w-5 text-gray-400" />
+                    <span className="text-lg text-gray-400">🔒</span>
                   </div>
                   <input
                     id="password"
@@ -160,11 +160,9 @@ const Login = () => {
                     className="absolute inset-y-0 right-0 pr-3 flex items-center"
                     onClick={() => setShowPassword(!showPassword)}
                   >
-                    {showPassword ? (
-                      <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
-                    ) : (
-                      <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
-                    )}
+                                    <span className="text-lg text-gray-400 hover:text-gray-600">
+                  {showPassword ? '🙈' : '👁️'}
+                </span>
                   </button>
                 </div>
                 {errors.password && (
@@ -210,7 +208,7 @@ const Login = () => {
                 ) : (
                   <>
                     {t('auth.loginButton')}
-                    <ArrowRight className="w-4 h-4 ml-2" />
+                    <span className="text-lg ml-2">→</span>
                   </>
                 )}
               </button>

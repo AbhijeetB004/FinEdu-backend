@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Eye, EyeOff, Mail, Lock, User, Phone, ArrowRight } from 'react-feather'
+// Icons replaced with emojis and text
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../hooks/useAuth'
@@ -33,7 +33,19 @@ const Register = () => {
     setIsSubmitting(true)
     
     try {
-      const result = await registerUser(data)
+      // Structure the data correctly for the backend
+      const userData = {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        role: data.role,
+        language: data.language,
+        profile: {
+          phoneNumber: data.phone || undefined
+        }
+      }
+      
+      const result = await registerUser(userData)
       
       if (!result.success) {
         setError('root', {
@@ -114,7 +126,7 @@ const Register = () => {
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <User className="h-5 w-5 text-gray-400" />
+                    <span className="text-lg text-gray-400">👤</span>
                   </div>
                   <input
                     id="name"
@@ -143,7 +155,7 @@ const Register = () => {
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Mail className="h-5 w-5 text-gray-400" />
+                    <span className="text-lg text-gray-400">📧</span>
                   </div>
                   <input
                     id="email"
@@ -172,7 +184,7 @@ const Register = () => {
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Phone className="h-5 w-5 text-gray-400" />
+                    <span className="text-lg text-gray-400">📱</span>
                   </div>
                   <input
                     id="phone"
@@ -238,7 +250,7 @@ const Register = () => {
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Lock className="h-5 w-5 text-gray-400" />
+                    <span className="text-lg text-gray-400">🔒</span>
                   </div>
                   <input
                     id="password"
@@ -260,11 +272,9 @@ const Register = () => {
                     className="absolute inset-y-0 right-0 pr-3 flex items-center"
                     onClick={() => setShowPassword(!showPassword)}
                   >
-                    {showPassword ? (
-                      <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
-                    ) : (
-                      <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
-                    )}
+                    <span className="text-lg text-gray-400 hover:text-gray-600">
+                      {showPassword ? '🙈' : '👁️'}
+                    </span>
                   </button>
                 </div>
                 {errors.password && (
@@ -279,7 +289,7 @@ const Register = () => {
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Lock className="h-5 w-5 text-gray-400" />
+                    <span className="text-lg text-gray-400">🔒</span>
                   </div>
                   <input
                     id="confirmPassword"
@@ -298,11 +308,9 @@ const Register = () => {
                     className="absolute inset-y-0 right-0 pr-3 flex items-center"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   >
-                    {showConfirmPassword ? (
-                      <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
-                    ) : (
-                      <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
-                    )}
+                    <span className="text-lg text-gray-400 hover:text-gray-600">
+                      {showConfirmPassword ? '🙈' : '👁️'}
+                    </span>
                   </button>
                 </div>
                 {errors.confirmPassword && (
@@ -354,7 +362,7 @@ const Register = () => {
                 ) : (
                   <>
                     {t('auth.registerButton')}
-                    <ArrowRight className="w-4 h-4 ml-2" />
+                    <span className="text-lg ml-2">→</span>
                   </>
                 )}
               </button>

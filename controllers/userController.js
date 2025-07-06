@@ -201,5 +201,34 @@ module.exports = {
     } catch (err) {
       res.status(500).json({ error: 'Failed to get teachers', message: err.message });
     }
+  },
+
+  /**
+   * @route PUT /api/users/profile
+   * @desc Update current user profile
+   */
+  updateProfile: async (req, res) => {
+    try {
+      const { name, email, language, profile } = req.body;
+      
+      const user = await User.findById(req.user._id);
+      if (!user) {
+        return res.status(404).json({ error: ERROR_MESSAGES.USER_NOT_FOUND });
+      }
+
+      // Update fields
+      if (name) user.name = name;
+      if (email) user.email = email.toLowerCase();
+      if (language) user.language = language;
+      if (profile) user.profile = { ...user.profile, ...profile };
+
+      await user.save();
+      res.status(200).json({
+        message: SUCCESS_MESSAGES.PROFILE_UPDATED,
+        user: user.getPublicProfile()
+      });
+    } catch (err) {
+      res.status(500).json({ error: 'Failed to update profile', message: err.message });
+    }
   }
 }; 
